@@ -10,10 +10,21 @@ public class FlagPole : MonoBehaviour
     public int nextWorld = 1;
     public int nextStage = 1;
 
+    private bool reached;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (!reached && other.CompareTag("Player"))
         {
+            reached = true;
+
+            // más puntos mientras más alto se agarre la bandera
+            float height = other.transform.position.y - poleBottom.position.y;
+            GameManager.Instance.AddScore(Mathf.Clamp(Mathf.RoundToInt(height) * 500, 100, 5000));
+
+            AudioManager.StopMusic();
+            AudioManager.Play(Sfx.Flagpole);
+
             StartCoroutine(MoveTo(flag, poleBottom.position));
             StartCoroutine(LevelCompleteSequence(other.transform));
         }
@@ -24,6 +35,9 @@ public class FlagPole : MonoBehaviour
         player.GetComponent<PlayerMovement>().enabled = false;
 
         yield return MoveTo(player, poleBottom.position);
+
+        AudioManager.Play(Sfx.StageClear);
+
         yield return MoveTo(player, player.position + Vector3.right);
         yield return MoveTo(player, player.position + Vector3.right + Vector3.down);
         yield return MoveTo(player, castle.position);

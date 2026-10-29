@@ -18,6 +18,18 @@ public class PlayerSpriteRenderer : MonoBehaviour
 
     private void LateUpdate()
     {
+        // animación de nado: brazada = sprite de salto, flotando = patalea con la animación de correr
+        if (movement.swimming && !movement.grounded)
+        {
+            run.enabled = !movement.stroking;
+
+            if (movement.stroking) {
+                spriteRenderer.sprite = jump;
+            }
+
+            return;
+        }
+
         run.enabled = movement.running;
 
         if (movement.jumping) {

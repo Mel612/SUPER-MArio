@@ -41,7 +41,12 @@ public class DeathAnimation : MonoBehaviour
             collider.enabled = false;
         }
 
-        GetComponent<Rigidbody2D>().isKinematic = true;
+        Rigidbody2D body = GetComponent<Rigidbody2D>();
+
+        if (body != null) {
+            body.bodyType = RigidbodyType2D.Kinematic;
+            body.linearVelocity = Vector2.zero;
+        }
 
         PlayerMovement playerMovement = GetComponent<PlayerMovement>();
         EntityMovement entityMovement = GetComponent<EntityMovement>();

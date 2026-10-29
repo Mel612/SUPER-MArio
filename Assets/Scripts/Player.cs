@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public bool big => bigRenderer.enabled;
     public bool dead => deathAnimation.enabled;
     public bool starpower { get; private set; }
+    public bool invulnerable { get; private set; }
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class Player : MonoBehaviour
 
     public void Hit()
     {
-        if (!dead && !starpower)
+        if (!dead && !starpower && !invulnerable)
         {
             if (big) {
                 Shrink();
@@ -35,9 +36,20 @@ public class Player : MonoBehaviour
 
     public void Death()
     {
+        if (dead) {
+            return;
+        }
+
+        StopAllCoroutines();
+        starpower = false;
+        invulnerable = false;
+
         smallRenderer.enabled = false;
         bigRenderer.enabled = false;
         deathAnimation.enabled = true;
+
+        AudioManager.StopMusic();
+        AudioManager.Play(Sfx.Death);
 
         GameManager.Instance.ResetLevel(3f);
     }
@@ -51,6 +63,9 @@ public class Player : MonoBehaviour
         capsuleCollider.size = new Vector2(1f, 2f);
         capsuleCollider.offset = new Vector2(0f, 0.5f);
 
+        AudioManager.Play(Sfx.PowerUp);
+        GameManager.Instance.AddScore(1000);
+
         StartCoroutine(ScaleAnimation());
     }
 
@@ -63,7 +78,10 @@ public class Player : MonoBehaviour
         capsuleCollider.size = new Vector2(1f, 1f);
         capsuleCollider.offset = new Vector2(0f, 0f);
 
+        AudioManager.Play(Sfx.Shrink);
+
         StartCoroutine(ScaleAnimation());
+        StartCoroutine(InvulnerableAnimation(2f));
     }
 
     private IEnumerator ScaleAnimation()
@@ -89,8 +107,34 @@ public class Player : MonoBehaviour
         activeRenderer.enabled = true;
     }
 
+    // tras recibir daño, Mario parpadea y no puede ser herido por un momento
+    private IEnumerator InvulnerableAnimation(float duration)
+    {
+        invulnerable = true;
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            Color color = activeRenderer.spriteRenderer.color;
+            color.a = (Time.frameCount / 4) % 2 == 0 ? 0.3f : 1f;
+            activeRenderer.spriteRenderer.color = color;
+
+            yield return null;
+        }
+
+        Color restored = activeRenderer.spriteRenderer.color;
+        restored.a = 1f;
+        activeRenderer.spriteRenderer.color = restored;
+
+        invulnerable = false;
+    }
+
     public void Starpower()
     {
+        AudioManager.Play(Sfx.PowerUp);
         StartCoroutine(StarpowerAnimation());
     }
 
