@@ -37,7 +37,7 @@ public class EntityMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        rigidbody.velocity = Vector2.zero;
+        rigidbody.linearVelocity = Vector2.zero;
         rigidbody.Sleep();
     }
 
