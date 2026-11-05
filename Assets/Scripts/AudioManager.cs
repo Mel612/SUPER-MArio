@@ -26,6 +26,7 @@ public enum Sfx
     BridgeBreak,
     GameOver,
     Victory,
+    Damage,
 }
 
 public enum MusicTrack
@@ -39,6 +40,9 @@ public enum MusicTrack
 }
 
 // Maneja la música y los efectos de sonido del juego.
+// Mejora SFX: si existe un archivo en Assets/Resources/Audio/SFX con el mismo nombre
+// del efecto (Jump, BigJump, Stomp, PowerUp, Damage, Death...), se usa ese archivo.
+// Si no existe, el sonido se genera por código como antes.
 // Como el repo no trae audios, todos los sonidos se generan por código
 // (estilo chiptune / NES). Si quieres usar tus propios .wav/.mp3, arrástralos
 // a los arreglos "sfxOverrides" o "musicOverrides" del objeto Audio Manager.
@@ -82,6 +86,9 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 1f)] public float sfxVolume = 0.55f;
 
     public MusicTrack currentTrack { get; private set; }
+
+    // carpeta dentro de Assets/Resources donde están los efectos de sonido
+    public const string SfxFolder = "Audio/SFX/";
 
     private AudioSource musicSource;
     private AudioSource sfxSource;
@@ -187,7 +194,12 @@ public class AudioManager : MonoBehaviour
 
         if (!sfxCache.TryGetValue(sfx, out AudioClip clip))
         {
-            clip = ChipSynth.CreateSfx(sfx);
+            clip = Resources.Load<AudioClip>(SfxFolder + sfx);
+
+            if (clip == null) {
+                clip = ChipSynth.CreateSfx(sfx);
+            }
+
             sfxCache[sfx] = clip;
         }
 
@@ -296,6 +308,7 @@ public static class ChipSynth
 
             case Sfx.Pipe:
             case Sfx.Shrink:
+            case Sfx.Damage:
                 buffer = New(0.5f);
                 for (int i = 0; i < 3; i++) {
                     Tone(buffer, i * 0.15f, 0.12f, 420f, 140f, Wave.Square50, 0.4f);

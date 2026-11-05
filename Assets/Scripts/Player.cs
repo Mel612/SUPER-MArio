@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
         capsuleCollider.size = new Vector2(1f, 1f);
         capsuleCollider.offset = new Vector2(0f, 0f);
 
-        AudioManager.Play(Sfx.Shrink);
+        AudioManager.Play(Sfx.Damage);
 
         StartCoroutine(ScaleAnimation());
         StartCoroutine(InvulnerableAnimation(2f));
