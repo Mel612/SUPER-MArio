@@ -9,12 +9,18 @@
 
 ---
 
+
 ## Integrantes del Proyecto
 
 - **Wara Jhoseany Callejas Mullisaca** - [@fchoque593-blip](https://github.com/fchoque593-blip)
 - **Daniel Gustavo Zambrana Rondón** - [@dani05051234](https://github.com/dani05051234)
 - **Milenka Melody Chuquimia Osco** - [@Mel612](https://github.com/Mel612)
 - **Isabel Belen Castillo Miranda** - [@isa.belu.c_](https://github.com/isa.belu.c_)
+
+---
+
+## IMPORTANTE
+## En la parte de Colaboradores, aunque hayamos aceptado y hecho los commits cada integrante del grupo no aparece en la pantalla principal, pero sí se realizaron las colaboraciones y aportes individuales en las gráficas y el detalle del proyecto.
 
 ---
 
