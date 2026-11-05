@@ -112,7 +112,7 @@ public class Squid : MonoBehaviour
         GetComponent<DeathAnimation>().enabled = true;
 
         AudioManager.Play(Sfx.Kick);
-        GameManager.Instance.AddScore(200);
+        GameManager.Instance.AddEnemyScore(200, transform.position);
 
         Destroy(gameObject, 3f);
     }

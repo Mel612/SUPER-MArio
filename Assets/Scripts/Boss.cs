@@ -196,7 +196,7 @@ public class Boss : MonoBehaviour
         hurtTimer = 1f;
         AudioManager.Play(Sfx.BossHit);
         ShakeCamera(0.3f, 0.2f);
-        GameManager.Instance.AddScore(1000);
+        GameManager.Instance.AddScore(1000, transform.position);
 
         if (health <= 0) {
             Defeat();
@@ -229,7 +229,7 @@ public class Boss : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
 
         AudioManager.Play(Sfx.BossFall);
-        GameManager.Instance.AddScore(5000);
+        GameManager.Instance.AddEnemyScore(5000, transform.position);
 
         float velocity = 2f;
         float elapsed = 0f;

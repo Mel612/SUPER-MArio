@@ -6,6 +6,7 @@ public class BlockCoin : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.AddCoin();
+        ScorePopup.Show(200, transform.position + Vector3.up);
 
         StartCoroutine(Animate());
     }

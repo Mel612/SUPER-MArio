@@ -20,7 +20,8 @@ public class FlagPole : MonoBehaviour
 
             // más puntos mientras más alto se agarre la bandera
             float height = other.transform.position.y - poleBottom.position.y;
-            GameManager.Instance.AddScore(Mathf.Clamp(Mathf.RoundToInt(height) * 500, 100, 5000));
+            GameManager.Instance.StopTimer();
+            GameManager.Instance.AddScore(Mathf.Clamp(Mathf.RoundToInt(height) * 500, 100, 5000), other.transform.position);
 
             AudioManager.StopMusic();
             AudioManager.Play(Sfx.Flagpole);
@@ -44,7 +45,10 @@ public class FlagPole : MonoBehaviour
 
         player.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(2f);
+        // el tiempo que sobra se convierte en puntos
+        yield return GameManager.Instance.TallyTime();
+
+        yield return new WaitForSeconds(1.5f);
 
         GameManager.Instance.LoadLevel(nextWorld, nextStage);
     }

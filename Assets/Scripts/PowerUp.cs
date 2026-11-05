@@ -29,14 +29,17 @@ public class PowerUp : MonoBehaviour
 
             case Type.ExtraLife:
                 GameManager.Instance.AddLife();
+                ScorePopup.Show("1UP", transform.position);
                 break;
 
             case Type.MagicMushroom:
                 player.GetComponent<Player>().Grow();
+                ScorePopup.Show(1000, transform.position); // Grow() ya suma los 1000
                 break;
 
             case Type.Starpower:
                 player.GetComponent<Player>().Starpower();
+                GameManager.Instance.AddScore(1000, transform.position);
                 break;
         }
 

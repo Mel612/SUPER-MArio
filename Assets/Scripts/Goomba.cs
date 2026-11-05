@@ -35,7 +35,7 @@ public class Goomba : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = flatSprite;
 
         AudioManager.Play(Sfx.Stomp);
-        GameManager.Instance.AddScore(100);
+        GameManager.Instance.AddEnemyScore(100, transform.position);
 
         Destroy(gameObject, 0.5f);
     }
@@ -46,7 +46,7 @@ public class Goomba : MonoBehaviour
         GetComponent<DeathAnimation>().enabled = true;
 
         AudioManager.Play(Sfx.Kick);
-        GameManager.Instance.AddScore(100);
+        GameManager.Instance.AddEnemyScore(100, transform.position);
 
         Destroy(gameObject, 3f);
     }
