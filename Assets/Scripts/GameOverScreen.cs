@@ -32,8 +32,13 @@ public class GameOverScreen : MonoBehaviour
             title.localScale = Vector3.zero;
         }
 
-        if (prompt != null) {
+        if (prompt != null)
+        {
             prompt.enabled = false;
+
+            if (Application.CanStreamedLevelBeLoaded("Menu")) {
+                prompt.text = "Presiona ENTER o ESPACIO para volver al menú";
+            }
         }
 
         if (marioIcon != null)
@@ -105,7 +110,10 @@ public class GameOverScreen : MonoBehaviour
     {
         restarting = true;
 
-        if (GameManager.Instance != null) {
+        // Mejora: después del Game Over se vuelve al menú inicial
+        if (Application.CanStreamedLevelBeLoaded("Menu")) {
+            SceneManager.LoadScene("Menu");
+        } else if (GameManager.Instance != null) {
             GameManager.Instance.NewGame();
         } else {
             SceneManager.LoadScene("1-1");
